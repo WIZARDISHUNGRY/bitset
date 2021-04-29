@@ -37,4 +37,9 @@ func TestSet(t *testing.T) {
 
 	diff := s.Difference(mask)
 	fmt.Println("diff   ", diff)
+
+	diffSet := &DiffSet{&s, mask}
+	fmt.Println("diffSet", diffSet)
+
+	s.Atom(999999999999999)
 }

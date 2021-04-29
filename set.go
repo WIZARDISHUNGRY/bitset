@@ -7,22 +7,27 @@ import (
 
 type Set interface {
 	fmt.Stringer
+	encoding.TextMarshaler
 
 	Atom(int) (value Atom)
 	AtomLen() int
 	Bit(int) (value bool)
-	Difference(Set) Set
+	//Difference(Set) Set
 	//Equal(Set) bool
 	//Intersection(Set) Set
 	Len() int
 	//OnesCount() int
-	Union(Set) Set
+	// Union(Set) Set
 }
 
 type set struct {
+	baseSet
 	atoms  []Atom
 	length int
 }
+
+type baseSet struct{}
+
 type Atom = uint64
 
 const (
@@ -72,6 +77,10 @@ func (s *set) String() string {
 }
 
 func (s *set) MarshalText() (text []byte, err error) {
+	return marshalText(s)
+}
+
+func marshalText(s Set) (text []byte, err error) {
 	out := make([]byte, s.Len(), s.Len())
 	for i := 0; i < s.Len(); i++ {
 		b := byte('0')
